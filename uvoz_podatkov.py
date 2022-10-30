@@ -1,5 +1,5 @@
 
-# TRENUTNO NAREJENO SAMO ZA PRVO STRAN - UREDITI JE TREBA ŠE PREHOD S TIPKO 'NEXT'
+# TRENUTNO NAREJENO SAMO ZA PRVO STRAN (prvih 200 oseb) - UREDITI JE TREBA ŠE PREHOD S TIPKO 'NEXT'
 
 from bs4 import BeautifulSoup
 from selenium import webdriver
@@ -37,7 +37,7 @@ soup = BeautifulSoup(html, features="html.parser")
 
 # print(soup)
 # pridobljene podatke v .html obliki shranim v novo datoteko, da bom do njih lažje dostopala.
-#          shranila sem kar v .html datoteko, da je datoteka po formatiranju bolj pregledna
+#          shranila sem kar v .html datoteko, da je datoteka po formatiranju bolj pregledna za 'luščenje' podatkov
 with open("output.html", "w") as file:
     file.write(str(soup))
 

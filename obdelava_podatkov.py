@@ -2,13 +2,14 @@ from fileinput import filename
 import re
 import os
 import sys
+import csv
 
 # =================================================================================================================================================
 
 # output.html prenesem v string:
 def file_to_string(filename):
     """Funkcija vrne celotno vsebino datoteke filename kot niz"""
-    with open(os.path.join(sys.path[0], filename), 'r', encoding='utf-8') as file: # ker je vse shranjeno v isti mapi
+    with open(os.path.join(sys.path[0], filename), 'r') as file: # ker je vse shranjeno v isti mapi
         return file.read()
 
 # print(type(read_file_to_string("output.html"))) # vrne class 'str'
@@ -27,11 +28,11 @@ block_pattern = re.compile(                         # blok v katerem so podatki 
 
 info_pattern = re.compile(
     r'style=".*?">\s*<div>(?P<name>.+?)\s</div>\s*</div>.*?'
-    r'<div class="netWorth" role="cell"\s*style=".*?">\s*<div>(?P<networth>.+?)<div.*?'
-    r'<div class="age" role="cell"\s*style=".*?">\s*<div>(?P<age>.+?)</div>\s*.*?'
-    r'<div class="countryOfCitizenship" role="cell"\s*style=".*?">\s*(?P<country>.+?)</div>.*?'
-    r'<div class="source-column">\s*<div class="expand-row__icon-container"><span\s*class="source-text">(?P<source>.+?)</span>.*?'
-    r'<div class="category" role="cell"\s*style=".*?">\s*<div>(?P<industry>.+?)\s*<span\s*',
+    r'<div class="netWorth".*?"\s*style=".*?">\s*<div>(?P<networth>.+?)<div.*?'
+    r'<div class="age".*?\s*style=".*?">\s*<div>(?P<age>.+?)</div>\s*.*?'
+    r'<div class="countryOfCitizenship".*?"\s*style=".*?">\s*(?P<country>.+?)</div>.*?'
+    r'<div class="source-column">\s*<div .*?><span\s*class="source-text">(?P<source>.+?)</span>.*?'
+    r'<div class="category" .*?\s*style=".*?">\s*<div>(?P<industry>.+?)\s*<span\s*',
     flags=re.DOTALL
 )
 
@@ -73,5 +74,46 @@ def list_of_dict():
     return all_blocks(filename)
 
 # =================================================================================================================================================
-# shranjevanje podatkov v .csv
+# funkcije za shranjevanje podatkov v .csv
 # =================================================================================================================================================
+
+directory_name = "Obdelani-podatki"
+csv_filename = "forbes.csv"
+
+def write_csv(fieldnames, rows, directory, filename):
+    """ Funkcija ustvari .csv datoteko oblike:
+    - prva vrstica so ključi slovarja (vsi slovarji imajo enake ključe)
+    - vse ostale vrstice pa so podatki posameznih seznamov"""
+    os.makedirs(directory, exist_ok=True)
+    path = os.path.join(directory, filename)
+    with open(path, 'w', encoding='utf-8') as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in rows:
+            writer.writerow(row)
+    return None
+
+def write_people_info_to_csv(list_of_dict, directory, filename):
+    """Funkcija podatke iz parametra "list_of_dict" - torej seznam slovarjev - zapiše 
+    v .csv datoteko. Funkcija predpostavi, da so ključi vseh
+    slovarjev parametra blocks enaki in je seznam blocks neprazen."""
+    # Stavek assert preveri da zahteva velja. Če drži se program normalno izvaja, drugače pa sproži napako
+    assert list_of_dict and (all(j.keys() == list_of_dict[0].keys() for j in list_of_dict))
+    write_csv(list_of_dict[0].keys(), list_of_dict, directory, filename)
+
+# write_people_info_to_csv(list_of_dict(), directory_name, csv_filename)
+
+# =================================================================================================================================================
+# 'zaključna' funkcija:
+# =================================================================================================================================================
+
+def main():
+    """Funkcija naredi sledeče:
+    - že narejeno .html datoteko pretvori v lepšo obliko (kot seznam slovarjev blokov)
+    - podatke shrani v .csv datoteko"""
+    # Iz .html datoteke preberemo podatke in jih pretvorimo v seznam slovarjav
+    #               list_of_dict()
+    # in podatke shranimo v .csv datoteko
+    write_people_info_to_csv(list_of_dict(), directory_name, csv_filename)
+
+main()
