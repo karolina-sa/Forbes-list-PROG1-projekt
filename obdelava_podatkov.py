@@ -25,10 +25,10 @@ block_pattern = re.compile(                         # blok v katerem so podatki 
 info_pattern = re.compile(
     r'style=".*?">\s*<div>(?P<name>.+?)\s</div>\s*</div>.*?' 
     r'<div class="netWorth" role="cell"\s*style=".*?">\s*<div>(?P<networth>.+?)<div class="status">.*?'
-    r'<div class="age" role="cell"\s*style="box-sizing: border-box; flex: 150 0 auto; min-width: 0px; width: 150px;">\s*<div>(?P<age>.+?)</div>\s*.*?'
+    r'<div class="age" role="cell"\s*style=".*?">\s*<div>(?P<age>.+?)</div>\s*.*?'
     r'<div class="countryOfCitizenship" role="cell"\s*style=".*?">\s*(?P<country>.+?)</div>.*?'
     r'<div class="source-column">\s*<div class="expand-row__icon-container"><span\s*class="source-text">(?P<source>.+?)</span><span.*?'
-    r'<div class="category" role="cell"\s*style=".*?">\s*<div>(?P<industry>.+?)<span class="expand-row__icon">.*?',
+    r'<div class="category" role="cell"\s*style=".*?">\s*<div>(?P<industry>.+?)\s*<span class="expand-row__icon">.*?',
     flags=re.DOTALL
 )
 
