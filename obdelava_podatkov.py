@@ -1,3 +1,4 @@
+from fileinput import filename
 import re
 import os
 import sys
@@ -10,7 +11,8 @@ def file_to_string(filename):
         return file.read()
 
 # print(type(read_file_to_string("output.html"))) # vrne class 'str'
-str = file_to_string("output.html")
+filename = "output.html"
+str = file_to_string(filename)
 
 # =================================================================================================================================================
 
@@ -23,27 +25,27 @@ block_pattern = re.compile(                         # blok v katerem so podatki 
 )
 
 info_pattern = re.compile(
-    r'style=".*?">\s*<div>(?P<name>.+?)\s</div>\s*</div>.*?' 
-    r'<div class="netWorth" role="cell"\s*style=".*?">\s*<div>(?P<networth>.+?)<div class="status">.*?'
+    r'style=".*?">\s*<div>(?P<name>.+?)\s</div>\s*</div>.*?'
+    r'<div class="netWorth" role="cell"\s*style=".*?">\s*<div>(?P<networth>.+?)<div.*?'
     r'<div class="age" role="cell"\s*style=".*?">\s*<div>(?P<age>.+?)</div>\s*.*?'
     r'<div class="countryOfCitizenship" role="cell"\s*style=".*?">\s*(?P<country>.+?)</div>.*?'
-    r'<div class="source-column">\s*<div class="expand-row__icon-container"><span\s*class="source-text">(?P<source>.+?)</span><span.*?'
-    r'<div class="category" role="cell"\s*style=".*?">\s*<div>(?P<industry>.+?)\s*<span class="expand-row__icon">.*?',
+    r'<div class="source-column">\s*<div class="expand-row__icon-container"><span\s*class="source-text">(?P<source>.+?)</span>.*?'
+    r'<div class="category" role="cell"\s*style=".*?">\s*<div>(?P<industry>.+?)\s*<span\s*',
     flags=re.DOTALL
 )
 
 # =================================================================================================================================================
 
-# funkciji s katerima si pomagamo pri pretvorbi niza v slovar:
+# funkcije s katerimi si pomagamo pri pretvorbi niza v slovar:
 
-def page_to_block(str):
+def page_to_blocks(str):
     """Funkcija poišče posamezne bloke oseb, ki se nahajajo v nizu ter vrne njihov seznam"""
     rx = block_pattern
     list = re.findall(rx, str)
     return list
 
-# print(len(razdelitev_niza_na_bloke(niz))) # res vrne 200 različnih blokov, torej ravno toliko kot jih mora
-block = page_to_block(str)
+# print(len(page_to_blocks(str))) # res vrne 200 različnih blokov, torej ravno toliko kot jih mora
+blocks = page_to_blocks(str)
 
 def get_info_from_block(block):
     """Funkcija iz niza za posamezen blok osebe izlušči podatke o imenu,
@@ -54,7 +56,19 @@ def get_info_from_block(block):
     dict = data.groupdict()
     return dict
 
-dict0 = get_info_from_block(block[0])
-print(dict0)
+dict0 = get_info_from_block(blocks[124])
+# print(dict0)
+
+def all_blocks(filename):
+    """Funkcija prebere podatke iz niza  in jih pretvori seznam slovarjev za vsako osebo posebej."""
+    page = file_to_string(filename)
+    blocks = page_to_blocks(page)
+    people = [get_info_from_block(block) for block in blocks]
+    return people
+
+# print(all_blocks(filename))
+
+
+
 
 # =================================================================================================================================================
