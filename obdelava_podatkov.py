@@ -4,6 +4,7 @@ import os
 import sys
 
 # =================================================================================================================================================
+
 # output.html prenesem v string:
 def file_to_string(filename):
     """Funkcija vrne celotno vsebino datoteke filename kot niz"""
@@ -15,8 +16,8 @@ filename = "output.html"
 str = file_to_string(filename)
 
 # =================================================================================================================================================
-
 # sestavim dva vzorca za lažje iskanje želenih podatkov:
+# =================================================================================================================================================
 
 block_pattern = re.compile(                         # blok v katerem so podatki ene osebe
     r'<div class="personName" role="cell"'          # začetek vsakega bloka
@@ -35,8 +36,8 @@ info_pattern = re.compile(
 )
 
 # =================================================================================================================================================
-
-# funkcije s katerimi si pomagamo pri pretvorbi niza v slovar:
+# funkcije za pretvorbo niza v slovar:
+# =================================================================================================================================================
 
 def page_to_blocks(str):
     """Funkcija poišče posamezne bloke oseb, ki se nahajajo v nizu ter vrne njihov seznam"""
@@ -68,7 +69,9 @@ def all_blocks(filename):
 
 # print(all_blocks(filename))
 
+def list_of_dict():
+    return all_blocks(filename)
 
-
-
+# =================================================================================================================================================
+# shranjevanje podatkov v .csv
 # =================================================================================================================================================
