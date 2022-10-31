@@ -9,12 +9,12 @@ import csv
 # output.html prenesem v string:
 def file_to_string(filename):
     """Funkcija vrne celotno vsebino datoteke filename kot niz"""
-    with open(os.path.join(sys.path[0], filename), 'r') as file: # ker je vse shranjeno v isti mapi
+    with open(os.path.join(sys.path[0], filename), 'r', encoding="utf8") as file: # ker je vse shranjeno v isti mapi; brez encoding ne dela!
         return file.read()
 
 # print(type(read_file_to_string("output.html"))) # vrne class 'str'
-filename = "output.html"
-str = file_to_string(filename)
+# filename = "output.html"
+# str = file_to_string(filename)
 
 # =================================================================================================================================================
 # sestavim dva vzorca za lažje iskanje želenih podatkov:
@@ -46,8 +46,8 @@ def page_to_blocks(str):
     list = re.findall(rx, str)
     return list
 
-# print(len(page_to_blocks(str))) # res vrne 200 različnih blokov, torej ravno toliko kot jih mora
-blocks = page_to_blocks(str)
+# blocks = page_to_blocks(str)
+# print(len(blocks)) # dobim pravilno (vseh je 2600)
 
 def get_info_from_block(block):
     """Funkcija iz niza za posamezen blok osebe izlušči podatke o imenu,
@@ -58,7 +58,7 @@ def get_info_from_block(block):
     dict = data.groupdict()
     return dict
 
-dict0 = get_info_from_block(blocks[124])
+# dict0 = get_info_from_block(blocks[2576])
 # print(dict0)
 
 def all_blocks(filename):
