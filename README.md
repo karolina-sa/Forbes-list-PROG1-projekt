@@ -20,5 +20,3 @@ Delovne hipoteze:
 - V kateri starostni skupini je največ bilijonarjev?
 - Ali katero podjetje izstopa po številu posameznikov, ki so se uvstrili na Forbsovo lestnivo?
 - Kateri industriji priprada največ najbogatejših?
-
-### Opis poteka dela:
