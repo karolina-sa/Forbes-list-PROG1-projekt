@@ -168,8 +168,6 @@ def write_info_to_csv(list_of_dict, directory, filename):
     assert list_of_dict and (all(j.keys() == list_of_dict[0].keys() for j in list_of_dict))
     write_csv(list_of_dict[0].keys(), list_of_dict, directory, filename)
 
-# write_info_to_csv(list_of_dict(), directory_name, csv_filename)
-
 # =================================================================================================================================================
 # 'zaključna' funkcija:
 # =================================================================================================================================================
